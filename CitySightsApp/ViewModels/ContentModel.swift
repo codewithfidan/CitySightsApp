@@ -14,6 +14,8 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     var locationManager = CLLocationManager()
     @Published var restaurants = [Business]()
     @Published var sights = [Business]()
+    
+    @Published var authorizationState = CLAuthorizationStatus.notDetermined
     override init(){
         
         
@@ -37,6 +39,8 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         
+        // Update the authorizationState property
+        authorizationState = locationManager.authorizationStatus
         
         if locationManager.authorizationStatus == .authorizedAlways ||
             locationManager.authorizationStatus == .authorizedWhenInUse{
@@ -116,14 +120,26 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
                         let decoder = JSONDecoder()
                         let result = try decoder.decode(BusinessSearch.self, from: data!)
                         
+                        // Sort businesses
+                        var businesses = result.businesses // use everywhere sorthed array
+                        businesses.sort { b1, b2 in
+                            // you have to return true or false. if return true b1 should be in front of b2, false- b2 comes first
+                            return b1.distance ?? 0 < b2.distance ?? 0
+                        }
+                        
+                        // Call the getImageData function of the business
+                        for b in businesses{
+                            b.getImageData()
+                        }
+                        
                         DispatchQueue.main.async {
                             
                             // Assign results to the appropriate property
                             switch category {
                             case Constants.restaurantsKey:
-                                self.restaurants = result.businesses
+                                self.restaurants = businesses //result.businesses
                             case Constants.sightsKey:
-                                self.sights = result.businesses
+                                self.sights = businesses //result.businesses
                             default:
                                 break
                             }
@@ -179,6 +195,7 @@ if category == Constants.restaurantsKey{
     self.sights = result.businesses
 }
 ||
+ A switch statement can be useful in place of a bunch of if, else if, statements, especially if you're checking multiple cases/conditions.
 switch category {
 case Constants.restaurantsKey:
     self.restaurants = result.businesses
