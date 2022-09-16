@@ -16,28 +16,34 @@ struct HomeView: View {
         
         
         if model.restaurants.count != 0 || model.sights.count != 0{
-            // Determine if we should show list or map
-            if !isMapShowing{
-                // show list
-                
-                VStack{
-                    HStack{
-                        Image(systemName: "mappin")
-                        Text("San Francisco")
-                        Spacer()
-                        Button {
-                            
-                        } label: {
-                            Text("Switch to the map view")
+            
+            NavigationView{
+                // Determine if we should show list or map
+                if !isMapShowing{
+                    // show list
+                    
+                    VStack{
+                        HStack{
+                            Image(systemName: "mappin")
+                            Text("San Francisco")
+                            Spacer()
+                            Button {
+                                
+                            } label: {
+                                Text("Switch to the map view")
+                            }
                         }
+                        Divider()
+                        BusinessList()
                     }
-                    Divider()
-                    BusinessList()
-                }.padding()
-               
-            }else{
-                // show map
+                    .padding()
+                    .navigationBarHidden(true)
+                    
+                }else{
+                    // show map
+                }
             }
+            
             
         }else{
             // after the user has authorized us to locate them, we actually have to wait for the geolocation to work and for us to get the location update. we have to pass latitude longitude into yelp api and wait for the response to come back

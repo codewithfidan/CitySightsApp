@@ -16,19 +16,15 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     @Published var sights = [Business]()
     
     @Published var authorizationState = CLAuthorizationStatus.notDetermined
+    
+    
     override init(){
-        
         
         // Init method of NSObject
         super.init()
         
         // Set content model as the delegate of the location manager
         locationManager.delegate = self
-        // we assign it to the content model = self is the keyword to assign  this instance of the content  model as the delegate of the location manager. we have to conform CLLocationManagerDelegate, NSObject protocol
-        
-        
-        
-        //how we are going to detect when the user has granted permission. when the user taps on one of those buttons in the permission dialog and core location manager is going to fire this method. content model is going to delegate of the location manager and location manager notify the content model
         
         // Request permission from the user
         locationManager.requestWhenInUseAuthorization()
@@ -55,6 +51,7 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
             
         }
     }
+    
     // this method keeps firing and giving us the current location. when they location changes/or not
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -80,14 +77,15 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
         
         
         /*
+         Create a url (one way)
          let urlString = "https://api.yelp.com/v3/businesses/search?latitude=\(location.coordinate.latitude)&longitude=\(location.coordinate.longitude)&categories=\(category)&limit=6"
          
          let url = URL(string: urlString)
          
          */
-        // Create URL
         
-        var urlComponents = URLComponents(string: Constants.apiUrl)
+        // Create URL (second way)
+         var urlComponents = URLComponents(string: Constants.apiUrl)
         
         urlComponents?.queryItems = [
             URLQueryItem(name: "latitude", value: String(location.coordinate.latitude)),
@@ -120,13 +118,14 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
                         let decoder = JSONDecoder()
                         let result = try decoder.decode(BusinessSearch.self, from: data!)
                         
-                        // Sort businesses
+                        // MARK: Sort businesses
                         var businesses = result.businesses // use everywhere sorthed array
                         businesses.sort { b1, b2 in
                             // you have to return true or false. if return true b1 should be in front of b2, false- b2 comes first
                             return b1.distance ?? 0 < b2.distance ?? 0
                         }
                         
+                        //MARK: UIImage
                         // Call the getImageData function of the business
                         for b in businesses{
                             b.getImageData()
@@ -157,6 +156,22 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
         }
     }
 }
+/*
+ 
+ override init(){
+ 
+            // Set content model as the delegate of the location manager
+            locationManager.delegate = self
+            // we assign it to the content model = self is the keyword to assign  this instance of the content  model as the delegate of the location manager. we have to conform CLLocationManagerDelegate, NSObject protocol
+
+
+
+            //how we are going to detect when the user has granted permission. when the user taps on one of those buttons in the permission dialog and core location manager is going to fire this method. content model is going to delegate of the location manager and location manager notify the content model
+
+            // Request permission from the user
+            locationManager.requestWhenInUseAuthorization()
+ }
+ */
 //print(locations.first ?? "no location")
 // Make sure to add a key (ex. 'Privacy - Location When In use ...') to your Info.plist to be able to request location from users
 

@@ -31,6 +31,9 @@ struct BusinessRow: View {
                 VStack(alignment: .leading){
                     Text(business.name ?? "")
                         .bold()
+                        .lineLimit(1)
+                        //.multilineTextAlignment(.leading)
+                        
                     Text(String(format: "%.1f km away", (business.distance ?? 0)/1000 ))//distance is double with meter
                         .font(.caption)
                     // %.1f - one decimal place
@@ -46,8 +49,9 @@ struct BusinessRow: View {
                         .font(.caption)
                 }
             }
-        }
-        Divider()
+            Divider()
+        }.foregroundColor(.black)
+        
     }
 }
 
