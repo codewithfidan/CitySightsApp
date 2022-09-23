@@ -27,11 +27,10 @@ struct HomeView: View {
                             Image(systemName: "mappin")
                             Text("San Francisco")
                             Spacer()
-                            Button {
-                                
-                            } label: {
-                                Text("Switch to the map view")
+                            Button("Switch to the map view") {
+                                self.isMapShowing = true
                             }
+                            
                         }
                         Divider()
                         BusinessList()
@@ -41,6 +40,8 @@ struct HomeView: View {
                     
                 }else{
                     // show map
+                    BusinessMap()
+                        .ignoresSafeArea()
                 }
             }
             
