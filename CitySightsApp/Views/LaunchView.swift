@@ -24,8 +24,6 @@ struct LaunchView: View {
             // if approved, show HomeView
             HomeView()
             
-            
-            
         }else {
             
             // if denied, show DeniedView

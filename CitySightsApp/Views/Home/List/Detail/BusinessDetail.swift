@@ -52,7 +52,7 @@ struct BusinessDetail: View {
                     .padding()
                 
                 // Loop through display address
-                if business.location?.displayAddress  != nil{
+                if business.location?.displayAddress != nil{
                     ForEach(business.location!.displayAddress!, id: \.self){address in
                         Text(address)
                             .padding(.horizontal)

@@ -10,7 +10,7 @@ import SwiftUI
 struct BusinessRow: View {
     
     @ObservedObject var business: Business
-    // because we are waiting on thwt imageData property
+    // because we are waiting on imageData property
     
     var body: some View {
         

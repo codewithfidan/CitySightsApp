@@ -14,7 +14,7 @@ struct BusinessSection: View {
     var body: some View {
         Section(header: BusinessSectionHeader(title: title)){
             ForEach(businesses){business in
-                
+                // if we dont have the restaurants conforming to the identifiable property, we have to add --> id: \.self
                 NavigationLink {
                     BusinessDetail(business: business)
                 } label: {

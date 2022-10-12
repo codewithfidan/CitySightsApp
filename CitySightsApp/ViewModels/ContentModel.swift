@@ -74,14 +74,11 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     // MARK: - Yelp API methods
     
     func  getBusinesses(category: String, location: CLLocation){
-        
-        
         /*
-         Create a url (one way)
+         Create a url (first way)
          let urlString = "https://api.yelp.com/v3/businesses/search?latitude=\(location.coordinate.latitude)&longitude=\(location.coordinate.longitude)&categories=\(category)&limit=6"
          
          let url = URL(string: urlString)
-         
          */
         
         // Create URL (second way)
@@ -188,8 +185,7 @@ class ContentModel: NSObject, ObservableObject, CLLocationManagerDelegate{
  
  locationManager.delegate = self
  // we assign it to the content model = self is the keyword to assign  this instance of the content  model as the delegate of the location manager.it allow us this class to be assigned s a delegate to the location manager. we have to conform CLLocationManagerDelegate protocol and conforming this protocol. when you try to conform to this protocol you get an error, because only NSObjects can conform this protocol.
- what is NSObject --> we know that instance of classes is object. in the objective-c objects known as NSObjects and CoreLocation framework was designed to build to work those objective-c classes. NSObjects is the root class of objective-c.
- and we get an error in init() method because it has own initialization method and we declare our init method it is actually conflicting with NSObject init() method. we have to use override keyword to say instead of calling init() method
+ what is NSObject --> we know that instance of classes is object. in the objective-c objects known as NSObjects and CoreLocation framework was designed to build to work those objective-c classes. NSObjects is the root class of objective-c. and we get an error in init() method because it has own initialization method and we declare our init method it is actually conflicting with NSObject init() method. we have to use override keyword to say instead of calling init() method
  and inside init() method we are going to call super, super -- refers to the parent class, super references NSObjects.
  super.init() - we are going to call the init method of this init object before running our own custom code. we are calling any initialization code in NSObject first and then we are running our own custom init method
  we have class contentModel is a subclass of NSObject
