@@ -10,7 +10,8 @@ import SwiftUI
 struct BusinessDetail: View {
     
     var business: Business
-    
+    @State private var showDirections = false
+    // if it is a property that only use in this view and you dont really need access in other views you can use private keyword
     
     var body: some View {
         VStack(alignment: .leading){
@@ -45,24 +46,8 @@ struct BusinessDetail: View {
             
             Group{
                 
-                // Business Name
-                Text(business.name!)
-                    .bold()
-                    .font(.title)
+                BusinessTitle(business: business)
                     .padding()
-                
-                // Loop through display address
-                if business.location?.displayAddress != nil{
-                    ForEach(business.location!.displayAddress!, id: \.self){address in
-                        Text(address)
-                            .padding(.horizontal)
-                        
-                    }
-                }
-                
-                // Rating
-                Image("regular_\(business.rating ?? 0)")
-                    .padding(.horizontal)
                 
                 Divider()
                 
@@ -102,7 +87,8 @@ struct BusinessDetail: View {
             
             // Get Directions Button
             Button {
-                
+                // Show direction
+                self.showDirections = true
             } label: {
                 ZStack{
                     Rectangle()
@@ -114,6 +100,9 @@ struct BusinessDetail: View {
                         .bold()
                         .foregroundColor(.white)
                 }.padding()
+                    .sheet(isPresented: $showDirections) {
+                        DirectionsView(business: business)
+                    }
             }
             
         }
