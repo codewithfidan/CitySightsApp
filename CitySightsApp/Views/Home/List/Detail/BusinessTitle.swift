@@ -16,7 +16,7 @@ struct BusinessTitle: View {
             // Business Name
             Text(business.name!)
                 .bold()
-                .font(.title)
+                .font(.title2)
                 .foregroundColor(.black)
             
             // Loop through display address
